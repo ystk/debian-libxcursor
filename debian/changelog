@@ -1,3 +1,9 @@
+libxcursor (1:1.1.10-2+squeeze1) oldstable-security; urgency=low
+
+  * CVE-2013-2003
+
+ -- Moritz Muehlenhoff <jmm@debian.org>  Tue, 14 May 2013 19:36:22 +0000
+
 libxcursor (1:1.1.10-2) unstable; urgency=low
 
   [ Julien Cristau ]
