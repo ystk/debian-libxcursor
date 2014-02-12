@@ -23,6 +23,7 @@ ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
 	MAKEFLAGS += -j$(NUMJOBS)
 endif
 
+DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 DEB_HOST_ARCH      ?= $(shell dpkg-architecture -qDEB_HOST_ARCH)
 DEB_HOST_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 DEB_BUILD_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
@@ -32,15 +33,19 @@ else
 	confflags += --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE)
 endif
 
+build: build-indep build-arch
+build-indep:
+build-arch: build-stamp
+.PHONY: build build-indep build-arch
 
-build: patch build-stamp
-build-stamp:
+build-stamp: $(STAMP_DIR)/patch
 	dh_testdir
 	autoreconf -vfi
 	mkdir -p build
 	cd build && \
 	../configure --prefix=/usr --mandir=\$${prefix}/share/man \
 	             --with-cursorpath=~/.icons:\$${datadir}/icons:/usr/share/pixmaps \
+	             --libdir=\$${prefix}/lib/$(DEB_HOST_MULTIARCH) \
 	             --infodir=\$${prefix}/share/info $(confflags) \
 	             CFLAGS="$(CFLAGS)" 
 	cd build && $(MAKE)
@@ -48,9 +53,7 @@ build-stamp:
 
 clean: xsfclean
 	dh_testdir
-	dh_testroot
 	rm -f build-stamp
-
 	rm -f config.cache config.log config.status
 	rm -f */config.cache */config.log */config.status
 	rm -f conftest* */conftest*
@@ -59,7 +62,6 @@ clean: xsfclean
 	rm -f aclocal.m4 config.guess config.h.in config.sub configure
 	rm -f depcomp install-sh ltmain.sh missing mkinstalldirs
 	find -name Makefile.in -delete
-
 	dh_clean
 
 install: build
@@ -80,7 +82,8 @@ binary-arch: build install
 	dh_installman
 	dh_installchangelogs
 	dh_link
-	dh_strip --dbg-package=$(PACKAGE)-dbg
+	dh_strip -p$(PACKAGE) --dbg-package=$(PACKAGE)-dbg
+	dh_strip -N$(PACKAGE)
 	dh_compress
 	dh_fixperms
 	dh_makeshlibs -V "libxcursor1 (>> 1.1.2)" --add-udeb=$(PACKAGE)-udeb
@@ -95,4 +98,4 @@ binary-indep: build install
 # Nothing to do
 
 binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install
+.PHONY: clean binary-indep binary-arch binary install

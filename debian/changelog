@@ -1,3 +1,53 @@
+libxcursor (1:1.1.13-1+deb7u1) wheezy-security; urgency=high
+
+  * signedness bug & integer overflow in _XcursorFileHeaderCreate()
+    [CVE-2013-2003]
+
+ -- Julien Cristau <jcristau@debian.org>  Tue, 14 May 2013 00:38:17 +0200
+
+libxcursor (1:1.1.13-1) unstable; urgency=low
+
+  * New upstream release.
+  * Mark libxcursor-dev multi-arch: same.
+  * Don't require root for debian/rules clean.
+
+ -- Julien Cristau <jcristau@debian.org>  Fri, 13 Apr 2012 20:47:26 +0200
+
+libxcursor (1:1.1.12-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Cyril Brulebois <kibi@debian.org>  Thu, 30 Jun 2011 12:48:34 +0200
+
+libxcursor (1:1.1.11-3) unstable; urgency=low
+
+  * Team upload.
+  * Don't put debugging symbols for the udeb in libxcursor1-dbg.
+  * Add build-arch and build-indep debian/rules target, and fix dependency for
+    build-stamp.
+
+ -- Julien Cristau <jcristau@debian.org>  Sat, 11 Jun 2011 23:59:05 +0200
+
+libxcursor (1:1.1.11-2) unstable; urgency=low
+
+  * Team upload.
+
+  [ Steve Langasek ]
+  * Build for multiarch.
+
+  [ Julien Cristau ]
+  * Remove David Nusinow from Uploaders.
+  * Bump Standards-Version to 3.9.2.
+
+ -- Julien Cristau <jcristau@debian.org>  Sat, 11 Jun 2011 15:26:06 +0200
+
+libxcursor (1:1.1.11-1) unstable; urgency=low
+
+  * New upstream release.
+  * Bump xutils-dev build-dep for new macros.
+
+ -- Cyril Brulebois <kibi@debian.org>  Sat, 06 Nov 2010 14:19:32 +0100
+
 libxcursor (1:1.1.10-2) unstable; urgency=low
 
   [ Julien Cristau ]
