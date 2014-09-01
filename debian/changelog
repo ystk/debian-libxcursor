@@ -1,3 +1,14 @@
+libxcursor (1:1.1.14-1) unstable; urgency=low
+
+  * New upstream release.
+  * Bump debhelper compat level to 7.
+  * Simplify installing the manpage.  No need to go through dh_installmanpages
+    when dh_install does the job.
+  * Disable silent rules.
+  * Use dpkg-buildflags.
+
+ -- Julien Cristau <jcristau@debian.org>  Sun, 23 Jun 2013 19:55:42 +0200
+
 libxcursor (1:1.1.13-1+deb7u1) wheezy-security; urgency=high
 
   * signedness bug & integer overflow in _XcursorFileHeaderCreate()

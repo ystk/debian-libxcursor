@@ -12,12 +12,6 @@ PACKAGE = libxcursor1
 
 include debian/xsfbs/xsfbs.mk
 
-CFLAGS = -Wall -g
-ifneq (,$(filter noopt,$(DEB_BUILD_OPTIONS)))
-	CFLAGS += -O0
-else
-	CFLAGS += -O2
-endif
 ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
 	NUMJOBS = $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
 	MAKEFLAGS += -j$(NUMJOBS)
@@ -32,6 +26,7 @@ ifeq ($(DEB_BUILD_GNU_TYPE), $(DEB_HOST_GNU_TYPE))
 else
 	confflags += --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE)
 endif
+confflags += $(shell DEB_CFLAGS_MAINT_APPEND=-Wall dpkg-buildflags --export=configure)
 
 build: build-indep build-arch
 build-indep:
@@ -46,8 +41,9 @@ build-stamp: $(STAMP_DIR)/patch
 	../configure --prefix=/usr --mandir=\$${prefix}/share/man \
 	             --with-cursorpath=~/.icons:\$${datadir}/icons:/usr/share/pixmaps \
 	             --libdir=\$${prefix}/lib/$(DEB_HOST_MULTIARCH) \
-	             --infodir=\$${prefix}/share/info $(confflags) \
-	             CFLAGS="$(CFLAGS)" 
+	             --infodir=\$${prefix}/share/info \
+	             --disable-silent-rules \
+	             $(confflags)
 	cd build && $(MAKE)
 	>$@
 
@@ -78,7 +74,7 @@ binary-arch: build install
 	dh_testroot
 
 	dh_installdocs
-	dh_install --sourcedir=debian/tmp --list-missing --exclude=libXcursor.la --exclude=usr/share/man/man3
+	dh_install --list-missing --exclude=libXcursor.la
 	dh_installman
 	dh_installchangelogs
 	dh_link
