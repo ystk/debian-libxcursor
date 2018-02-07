@@ -1,3 +1,11 @@
+libxcursor (1:1.1.14-1+deb8u1) jessie-security; urgency=high
+
+  * Non-maintainer upload by the Security Team.
+  * Fix heap overflows when parsing malicious files (CVE-2017-16612)
+    (Closes: #883792)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 07 Dec 2017 16:41:25 +0100
+
 libxcursor (1:1.1.14-1) unstable; urgency=low
 
   * New upstream release.
